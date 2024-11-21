@@ -1,0 +1,6 @@
+boto3==1.28.36
+natsort==8.4.0
+trafilatura==1.6.1
+tqdm==4.66.1
+pandas==2.0.3
+warcio==1.7.4

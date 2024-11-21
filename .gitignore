@@ -1,0 +1,11 @@
+backup/*
+**/__pycache__/*
+**/__pycache__
+.vscode/
+models/
+models_ignore
+output_dir
+datasets/
+datasets_bak/
+evaluate_model/output/
+deduplicate_data/deduplicate-text-datasets/target
