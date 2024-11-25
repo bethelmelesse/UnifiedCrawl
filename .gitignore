@@ -9,3 +9,4 @@ datasets/
 datasets_bak/
 evaluate_model/output/
 deduplicate_data/deduplicate-text-datasets/target
+setup/s3_keys.sh

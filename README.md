@@ -52,7 +52,7 @@ unzip ./duckdb_cli-linux-amd64.zip
 ### Filter the CC index by Language
 
 Run the following in the terminal-
-Set the environment variable `CC_CRAWL_VERSION` before running!
+Set the environment variables `CC_CRAWL_VERSION`, `S3_ACCESS_KEY`, and `S3_SECRET_ACCESS_KEY` before running!
 
 ```bash
 CC_CRAWL_VERSION="CC-MAIN-2023-06" ./download_data/download_and_filter_warc_index.sh 2>&1 | tee datasets/errors.txt
@@ -116,7 +116,7 @@ cd deduplicate_data/text-dedup
 # remove any previous deduplicated files
 rm -rf ./output && rm -rf ../deduplicate-text-datasets/.cache/ ../deduplicate-text-datasets/output/ ../deduplicate-text-datasets/tmp
 
-# "(When running on larger files, if you get an error that you have too many open files, that's because this script opens lots of files. You should run ulimit -Sn 1000000 to "fix" the error. You might want to do this preemptively before hitting this crash after hour ten of the job.)" 
+# "(When running on larger files, if you get an error that you have too many open files, that's because this script opens lots of files. You should run ulimit -Sn 1000000 to "fix" the error. You might want to do this preemptively before hitting this crash after hour ten of the job.)"
 ulimit -Sn 1000000
 
 # To de-duplicate a single-crawl
@@ -140,7 +140,7 @@ We can use a simple bash for loop to run the above for all the crawls using -
 LANGUAGE="amh"
 for i in ../../datasets/CC-MAIN* ; do
     echo $i
-    CC_CRAWL=`basename $i` 
+    CC_CRAWL=`basename $i`
     echo $CC_CRAWL
     rm -rf ./output && rm -rf ../deduplicate-text-datasets/.cache/ ../deduplicate-text-datasets/output/ ../deduplicate-text-datasets/tmp
     python -m text_dedup.suffix_array \
@@ -152,7 +152,7 @@ for i in ../../datasets/CC-MAIN* ; do
         --google_repo_path "../deduplicate-text-datasets" \
         --local \
         --batch_size 10000 \
-        --k 50 ; 
+        --k 50 ;
     done
 ```
 
@@ -160,7 +160,7 @@ for i in ../../datasets/CC-MAIN* ; do
 
 We deduplicated all the crawls separately first, because the original code requires much more time/memory if there are a very large number of duplicates. (see issue discussion [here](https://github.com/google-research/deduplicate-text-datasets/issues/18)).
 
-We can run the command below to deduplicate across crawls our already-deduplicated single crawls - 
+We can run the command below to deduplicate across crawls our already-deduplicated single crawls -
 
 ```bash
 rm -rf ./output && rm -rf ../deduplicate-text-datasets/.cache/ ../deduplicate-text-datasets/output/ ../deduplicate-text-datasets/tmp

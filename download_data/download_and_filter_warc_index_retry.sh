@@ -17,11 +17,11 @@ while IFS= read -r LINE; do          # print from file line by line
         LOAD parquet;
 
         SET s3_region='us-east-1';
-        SET s3_access_key_id='ADD_YOUR_ID';
-        SET s3_secret_access_key='ADD_YOUR_KEY';
+        SET s3_access_key_id='$S3_ACCESS_KEY';
+        SET s3_secret_access_key='$S3_SECRET_ACCESS_KEY';
 
         COPY (select url, content_languages, warc_filename, warc_record_offset, warc_record_length from PARQUET_SCAN('s3://commoncrawl/$LINE') where content_languages ilike '${LANGUAGE}%') TO 'datasets/$CC_CRAWL_VERSION/${LANGUAGE}_warc_index/$COUNTER.csv' (DELIMITER ',', HEADER TRUE);
-        " 
+        "
         sleep 1
     fi
     COUNTER=$((COUNTER+1))

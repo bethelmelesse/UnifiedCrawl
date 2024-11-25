@@ -12,8 +12,8 @@ import multiprocessing
 import argparse
 
 s3_region='us-east-1'
-s3_access_key_id='ADD_YOUR_ID'
-s3_secret_access_key='ADD_YOUR_KEY'
+s3_access_key_id=os.environ['S3_ACCESS_KEY']
+s3_secret_access_key=os.environ['S3_SECRET_ACCESS_KEY']
 config = Config(
 retries = {
     'max_attempts': 10,
@@ -47,7 +47,7 @@ def downloadwarc(row):
     for record in ArchiveIterator(r['Body']):
         if record.rec_type == 'response':
             html = record.content_stream().read()
-    
+
     return html
 
 def write_on_file(count_folders, text_list, path_to_output_files):
@@ -62,7 +62,7 @@ def check_last_folder(path_to_output_files):
     previously_done = natsorted(glob.glob(f"{path_to_output_files}*.json"))
     if len(previously_done) == 0:
         return -1
-    
+
     previously_done = previously_done[-1]
     previously_done = previously_done.split('/')[-1]
     previously_done = int(previously_done[:-5])
@@ -122,7 +122,7 @@ def main():
     with multiprocessing.Pool(processes=24) as pool:
         rows_left = len(only_lang) - rows_to_skip
         for index, text_from_html in tqdm(pool.imap(download_and_extract, only_lang_skipped, chunksize=50), total=rows_left):
-        
+
             if index < end:
                 text_list.append(text_from_html)
             else:
@@ -131,7 +131,7 @@ def main():
                 text_list.append(text_from_html)
                 # This mean index = end.
                 count_folders += 1
-                end += 100             
+                end += 100
 
     # to write the last batch -- 25246
     # Changes this to text_list instead of text_from_html, because text_from_html will only be the last webpage, 25246
