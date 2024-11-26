@@ -1,4 +1,43 @@
-# Amharic Data Collection, Bechmarking, and Fine-tuning
+# UnifiedCrawl: Aggregated Common Crawl for Affordable Adaptation of LLMs on Low-Resource Languages
+
+🌟 [ArXiv Preprint](https://arxiv.org/abs/2411.14343)
+
+Make largest monolingual datasets for low-resource languages from all of Common Crawl! Data Collection, Bechmarking, and Fine-tuning.
+
+![dataset_sizes](dataset_sizes.png)
+
+## 🔗 Quick Links
+
+- [UnifiedCrawl: Aggregated Common Crawl for Affordable Adaptation of LLMs on Low-Resource Languages](#unifiedcrawl-aggregated-common-crawl-for-affordable-adaptation-of-llms-on-low-resource-languages)
+  - [🔗 Quick Links](#-quick-links)
+  - [Brief Introduction](#brief-introduction)
+  - [How to setup an environment](#how-to-setup-an-environment)
+    - [Install conda](#install-conda)
+    - [Create conda python environment, install cuda](#create-conda-python-environment-install-cuda)
+    - [Install python dependencies](#install-python-dependencies)
+    - [Setup other dependencies to download CC data](#setup-other-dependencies-to-download-cc-data)
+  - [How to download the data from CC](#how-to-download-the-data-from-cc)
+    - [Filter the CC index by Language](#filter-the-cc-index-by-language)
+  - [Remove duplicate URLs](#remove-duplicate-urls)
+    - [Download and extract the text from filtered CC index](#download-and-extract-the-text-from-filtered-cc-index)
+  - [Deduplicate Data](#deduplicate-data)
+    - [Install Rust](#install-rust)
+    - [Build binary for deduplicate-texts-datasets](#build-binary-for-deduplicate-texts-datasets)
+    - [Run Data Deduplication](#run-data-deduplication)
+      - [Combine crawl files into one for each crawl](#combine-crawl-files-into-one-for-each-crawl)
+      - [Deduplicate a single crawl](#deduplicate-a-single-crawl)
+      - [Deduplicate all crawls together](#deduplicate-all-crawls-together)
+      - [Filter very short documents](#filter-very-short-documents)
+  - [How to benchmark original models on amharic/english](#how-to-benchmark-original-models-on-amharicenglish)
+  - [How to finetune model on amharic](#how-to-finetune-model-on-amharic)
+  - [Bugs or Questions?](#bugs-or-questions)
+  - [Citation](#citation)
+
+## Brief Introduction
+
+1. Download mono-lingual datasets from common crawl. See the section [How to download the data from CC](#how-to-download-the-data-from-cc)
+1. Deduplicate dataset using exact substring match. See [Deduplicate Data](#deduplicate-data)
+1. [Benchmark](#how-to-benchmark-original-models-on-amharicenglish) pre-trained original models, and [finetune](#how-to-finetune-model-on-amharic) using the crawled data
 
 ## How to setup an environment
 
@@ -186,14 +225,42 @@ python deduplicate_data/remove_short_docs.py
 
 ## How to benchmark original models on amharic/english
 
+While we present instructions for Amharic language, similar methods can be used for any language.
+
 1. Change the values in the file [evaluate_model/hyperparameters.py](evaluate_model/hyperparameters.py)
 1. Run the model using `python evaluate_model/run_model.py`
 
 ## How to finetune model on amharic
+
+While we present instructions for Amharic language, similar method can be used for any language.
 
 Run the script below to finetune. Change the necessary variables.
 
 ```bash
 # rm -rf ./finetune_model/output_dir/facebook/xglm-4.5B/
 ./finetune_model/run_finetune.sh
+```
+
+## Bugs or Questions?
+
+If you have any questions related to the code or the paper, feel free to email Bethel Melesse at the email provided in the manuscript. If you encounter any problems when using the code, you can open an issue!
+
+## Citation
+
+Please cite our paper if you find the repo helpful in your work:
+
+```bibtex
+@article{tessema2024unifiedcrawl,
+  author       = {Bethel Melesse Tessema and
+                  Akhil Kedia and
+                  Tae-Sun Chung},
+  title        = {UnifiedCrawl: Aggregated Common Crawl for Affordable Adaptation of LLMs on Low-Resource Languages},
+  journal      = {CoRR},
+  volume       = {abs/2411.14343},
+  year         = {2024},
+  url          = {https://doi.org/10.48550/arXiv.2411.14343},
+  doi          = {10.48550/ARXIV.2411.14343},
+  eprinttype    = {arXiv},
+  eprint       = {2411.14343}
+}
 ```
